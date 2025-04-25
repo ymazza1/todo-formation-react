@@ -1,24 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { BrowserRouter as Router, Routes, Route } from "react-router";
+import Header from "./Header/Header";
+import Footer from "./Footer/Footer";
+import NotFound from "./NotFound/NotFound";
+import About from "./About/About";
+import TaskDetails from "./TaskDetails/TaskDetails";
+import { initTask } from "../src/Redux/taskActions";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+
+import TaskListContainer from "./TaskListContainer/TaskListContainer";
 
 function App() {
+  const authorName = "Yoann Mazza";
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(initTask());
+  }, [dispatch]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div className="App">
+        <Header />
+        <Routes>
+          <Route path="/" element={<TaskListContainer />} />
+          <Route path="/about" element={<About />} />
+          <Route path="*" element={<NotFound />} />
+          <Route path="/task/:id" element={<TaskDetails />} />
+        </Routes>
+        <Footer name={authorName} />
+      </div>
+    </Router>
   );
 }
 
